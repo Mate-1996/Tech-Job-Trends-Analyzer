@@ -1,8 +1,7 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
-import firebase_admin
-from firebase_admin import credentials
+from flask_cors import CORS
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
@@ -13,13 +12,17 @@ def create_app():
 
     bcrypt.init_app(app)
     jwt.init_app(app)
-
-    cred = credentials.Certificate("firebase-key.json")
-    firebase_admin.initialize_app(cred)
+    CORS(app)
 
     from app.auth import auth_bp
     from app.jobs import jobs_bp
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(jobs_bp, url_prefix="/api/jobs")
+
+    from apscheduler.schedulers.background import BackgroundScheduler
+    from app.scrapers.remoteok import scrape_remoteok
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(scrape_remoteok, "interval", hours=12)
+    scheduler.start()
 
     return app

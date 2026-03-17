@@ -8,3 +8,4 @@ beautifulsoup4
 playwright
 apscheduler
 python-dotenv
+flask-cors
