@@ -55,4 +55,4 @@ __pycache__/
 next-env.d.ts
 
 firebase-key.json
-
+flask_backend/firebase-key.json
