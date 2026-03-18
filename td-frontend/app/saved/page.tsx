@@ -130,7 +130,7 @@ export default function SavedPage() {
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "8px", flexShrink: 0 }}>
-                
+                <a
                   href={job.job_url}
                   target="_blank"
                   rel="noopener noreferrer"

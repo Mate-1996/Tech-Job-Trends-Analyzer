@@ -52,19 +52,19 @@ export default function JobsPage() {
     if (e.key === "Enter") handleSearch();
   }
 
- const inputStyle: React.CSSProperties = {
-  background: "var(--bg-card)",
-  border: "1px solid var(--border)",
-  borderRadius: "8px",
-  padding: "10px 14px",
-  color: "var(--text)",
-  fontSize: "14px",
-  fontFamily: "'DM Sans', sans-serif",
-  outline: "none",
-  flex: 1,
-  minWidth: "160px",
-  transition: "border-color 0.2s",
-};
+  const inputStyle: React.CSSProperties = {
+    background: "var(--bg-card)",
+    border: "1px solid var(--border)",
+    borderRadius: "8px",
+    padding: "10px 14px",
+    color: "var(--text)",
+    fontSize: "14px",
+    fontFamily: "'DM Sans', sans-serif",
+    outline: "none",
+    flex: 1,
+    minWidth: "160px",
+    transition: "border-color 0.2s",
+  };
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 24px" }}>
@@ -110,7 +110,7 @@ export default function JobsPage() {
           onBlur={e => (e.target.style.borderColor = "var(--border)")}
         />
         <input
-          placeholder="Skill (e.g. Python)..."
+          placeholder="python"
           value={filters.skill}
           onChange={e => setFilters({ ...filters, skill: e.target.value })}
           onKeyDown={handleKeyDown}
@@ -210,14 +210,14 @@ export default function JobsPage() {
                         cursor: "pointer",
                         transition: "all 0.15s",
                       }}
-                     onMouseOver={e => {
-  (e.target as HTMLSpanElement).style.borderColor = "var(--accent)";
-  (e.target as HTMLSpanElement).style.color = "var(--accent)";
-}}
-onMouseOut={e => {
-  (e.target as HTMLSpanElement).style.borderColor = "var(--border)";
-  (e.target as HTMLSpanElement).style.color = "var(--text-muted)";
-}}
+                      onMouseOver={e => {
+                        (e.target as HTMLSpanElement).style.borderColor = "var(--accent)";
+                        (e.target as HTMLSpanElement).style.color = "var(--accent)";
+                      }}
+                      onMouseOut={e => {
+                        (e.target as HTMLSpanElement).style.borderColor = "var(--border)";
+                        (e.target as HTMLSpanElement).style.color = "var(--text-muted)";
+                      }}
                     >
                       {skill}
                     </span>
@@ -226,7 +226,7 @@ onMouseOut={e => {
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "8px", flexShrink: 0 }}>
-                
+                <a
                   href={job.job_url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -241,8 +241,8 @@ onMouseOut={e => {
                     textAlign: "center",
                     transition: "opacity 0.2s",
                   }}
-                onMouseOver={e => { (e.target as HTMLAnchorElement).style.opacity = "0.85"; }}
-                onMouseOut={e => { (e.target as HTMLAnchorElement).style.opacity = "1"; }}
+                  onMouseOver={e => { (e.target as HTMLAnchorElement).style.opacity = "0.85"; }}
+                  onMouseOut={e => { (e.target as HTMLAnchorElement).style.opacity = "1"; }}
                 >
                   Apply →
                 </a>

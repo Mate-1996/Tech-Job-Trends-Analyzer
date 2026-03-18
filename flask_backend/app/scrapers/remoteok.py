@@ -1,25 +1,18 @@
 import requests
 from datetime import datetime, timezone
-from app.firebase import get_db
+from .base import extract_skills, save_job, get_db
+import logging
 
-SKILLS_LIST = [
-    "Python", "JavaScript", "TypeScript", "React", "Node.js",
-    "SQL", "PostgreSQL", "MongoDB", "AWS", "Docker",
-    "Kubernetes", "Go", "Rust", "Java", "Django",
-    "FastAPI", "Vue", "Angular", "Machine Learning", "Redis",
-    "Flask", "Ruby", "PHP", "Swift", "Kotlin", "Scala"
-]
+logger = logging.getLogger(__name__)
 
-def extract_skills(text):
-    return [s for s in SKILLS_LIST if s.lower() in text.lower()]
 
-def scrape_remoteok():
+def scrape_remoteok() -> int:
     db = get_db()
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; JobScraper/1.0)"
     }
 
-    print("Fetching RemoteOK API...")
+    logger.info("Fetching RemoteOK API...")
     try:
         res = requests.get(
             "https://remoteok.com/api",
@@ -29,11 +22,11 @@ def scrape_remoteok():
         res.raise_for_status()
         data = res.json()
     except Exception as e:
-        print(f"Request failed: {e}")
+        logger.error(f"RemoteOK request failed: {e}")
         return 0
 
     jobs = data[1:] if data else []
-    print(f"Found {len(jobs)} jobs")
+    logger.info(f"RemoteOK: found {len(jobs)} listings")
 
     saved = 0
     for job in jobs:
@@ -54,7 +47,7 @@ def scrape_remoteok():
                 t for t in tags if isinstance(t, str) and len(t) < 25
             ]))
 
-            db.collection("jobs").add({
+            new_job = {
                 "title": title,
                 "company": company,
                 "location": location,
@@ -63,14 +56,15 @@ def scrape_remoteok():
                 "job_url": job_url,
                 "source": "RemoteOK",
                 "skills": skills,
-                "date_posted": datetime.now(timezone.utc).isoformat()
-            })
-            saved += 1
-            print(f"  Saved: {title} @ {company}")
+                "date_posted": datetime.now(timezone.utc).isoformat(),
+            }
+
+            if save_job(db, new_job):
+                saved += 1
 
         except Exception as e:
-            print(f"  Error: {e}")
+            logger.warning(f"RemoteOK job error: {e}")
             continue
 
-    print(f"Done. Saved {saved} jobs.")
+    logger.info(f"RemoteOK done. Saved {saved} new jobs.")
     return saved
