@@ -21,8 +21,20 @@ def create_app():
 
     from apscheduler.schedulers.background import BackgroundScheduler
     from app.scrapers.remoteok import scrape_remoteok
+    from app.scrapers.weworkremotely import scrape_weworkremotely
+    from app.scrapers.linkedin import scrape_linkedin
+
     scheduler = BackgroundScheduler()
-    scheduler.add_job(scrape_remoteok, "interval", hours=12)
+
+    # RemoteOK, light API call, run every 6 hours
+    scheduler.add_job(scrape_remoteok, "interval", hours=6, id="remoteok")
+
+    # We Work Remotely, every 12 hours
+    scheduler.add_job(scrape_weworkremotely, "interval", hours=12, id="weworkremotely")
+
+    # LinkedIn, every 24 hours (more aggressive anti-bot)
+    scheduler.add_job(scrape_linkedin, "interval", hours=24, id="linkedin")
+
     scheduler.start()
 
     return app
