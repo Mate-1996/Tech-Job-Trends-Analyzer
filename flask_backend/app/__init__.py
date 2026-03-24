@@ -12,7 +12,7 @@ def create_app():
 
     bcrypt.init_app(app)
     jwt.init_app(app)
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     from app.auth import auth_bp
     from app.jobs import jobs_bp

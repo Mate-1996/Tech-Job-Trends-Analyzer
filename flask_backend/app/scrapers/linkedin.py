@@ -9,10 +9,10 @@ from .base import (
 
 logger = logging.getLogger(__name__)
 
-# LinkedIn public job search — no login required for basic listings
+# LinkedIn public job search, no login required for basic listings
 LINKEDIN_BASE = "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
 
-# Searches to run. Each dict becomes query params.
+# Searches to run. each dict becomes query params.
 LINKEDIN_SEARCHES = [
     {"keywords": "software engineer", "location": "Remote", "f_WT": "2"},
     {"keywords": "backend developer", "location": "Remote", "f_WT": "2"},
@@ -23,7 +23,7 @@ LINKEDIN_SEARCHES = [
     {"keywords": "machine learning engineer", "location": "Remote", "f_WT": "2"},
 ]
 
-# How many result pages to fetch per search (25 results per page)
+# How many result pages to fetch per search 
 PAGES_PER_SEARCH = 2
 
 
